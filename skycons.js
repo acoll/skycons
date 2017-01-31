@@ -1,5 +1,7 @@
-(function(global) {
-  "use strict";
+/* jshint browser:true, node:true */
+"use strict";
+
+module.exports = function(global) {
 
   /* Set up a RequestAnimationFrame shim so we can animate efficiently FOR
    * GREAT JUSTICE. */
@@ -18,7 +20,7 @@
               global.msCancelAnimationFrame      ;
 
     if(raf && caf) {
-      requestInterval = function(fn) {
+      requestInterval = function(fn, delay) {
         var handle = {value: null};
 
         function loop() {
@@ -139,7 +141,7 @@
   /* FIXME: I'm *really really* sorry that this code is so gross. Really, I am.
    * I'll try to clean it up eventually! Promise! */
   var KEYFRAME = 500,
-      STROKE = 0.05,
+      STROKE = 0.08,
       TAU = 2.0 * Math.PI,
       TWO_OVER_SQRT_2 = 2.0 / Math.sqrt(2);
 
@@ -265,6 +267,8 @@
     t /= 750;
 
     var a = cw * 0.1875,
+        b = TAU * 11 / 12,
+        c = TAU *  7 / 12,
         i, p, x, y;
 
     ctx.strokeStyle = color;
@@ -715,12 +719,13 @@
       }, 1000 / 60);
     },
     pause: function() {
+      var i;
+
       if(this.interval) {
         cancelInterval(this.interval);
         this.interval = null;
       }
     }
   };
-
-  global.Skycons = Skycons;
-}(this));
+  return Skycons;
+};
